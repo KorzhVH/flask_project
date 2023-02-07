@@ -86,13 +86,15 @@ def vacancy_events(vacancy_id):
 @app.route("/vacancy/vacancy_id/events/event_id/", methods=['GET', 'PUT', 'DELETE'])
 def show_event_by_id(vacancy_id, event_id):
     list_of_events_for_vacancy = []
-    for event_searcher in events_data:
-        if event_searcher["vacancy_id"] == vacancy_id:
-            list_of_events_for_vacancy.append(event_searcher)
-    return list_of_events_for_vacancy[event_id]
+    for event in events_data:
+        if event["vacancy_id"] == vacancy_id:
+            list_of_events_for_vacancy.append(event)
+    for event_searcher in list_of_events_for_vacancy:
+        if event_searcher["id"] == event_id:
+            return list_of_events_for_vacancy.append(event_searcher)
 
 
-@app.route("/vacancy/id/history/", methods=['GET', 'DELETE'])
+@app.route("/vacancy/vacancy_id/history/", methods=['GET', 'DELETE'])
 def vacancy_history():
     return 'any vacancy'
 
