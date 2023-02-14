@@ -1,5 +1,5 @@
-from flask import Flask
-
+from flask import Flask, request, render_template
+import db_processing
 app = Flask(__name__)
 
 vacancy_data = [
@@ -62,9 +62,15 @@ events_data = [
 ]
 
 
-@app.route("/vacancy/", methods=['GET', 'POST'])
+@app.route("/vacancy/", methods=['get', 'post'])
 def vacancy():
-    return vacancy_data
+    if request.method =="post":
+       position_name = request.form.get['position_name']
+       company = request.form.get['company']
+       description = request.form.get['description']
+       contacts_id = request.form.get['contacts_id']
+       comment = request.form.get['comment']
+    return render_template('add-vacancy.html')
 
 
 @app.route("/vacancy/vacancy_id/", methods=['GET', 'DELETE'])
@@ -127,3 +133,7 @@ def user_documents():
 @app.route("/user/templates/", methods=['GET', 'POST', 'PUT', 'DELETE'])
 def user_templates():
     return 'users templates'
+
+
+if __name__ == "__main__":
+    app.run()
