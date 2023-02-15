@@ -3,64 +3,38 @@ import db_processing
 app = Flask(__name__)
 
 vacancy_data = [
-    {"id": 1,
-     "creation_date": "01.01.2023",
-     "status": 1,
-     "company": "some company",
-     "contacts_id": [1, 2],
-     "description": "It's something",
-     "position_name": "Python Developer",
-     "comment": "some comment",
-     "user_id": 101
+    {"id": "int",
+     "creation_date": "text",
+     "status": "int",
+     "company": "text",
+     "contacts_id": [],
+     "description": "text",
+     "position_name": "text",
+     "comment": "text",
+     "user_id": "int"
      },
-    {"id": 2,
-     "creation_date": "15.01.2023",
-     "status": 1,
-     "company": "some company",
-     "contacts_id": [3, 4],
-     "description": "It's something",
-     "position_name": "Python Developer",
-     "comment": "some comment",
-     "user_id": 102
-     },
-    {"id": 3,
-     "creation_date": "01.02.2023",
-     "status": 1,
-     "company": "some company",
-     "contacts_id": [5, 6],
-     "description": "It's something",
-     "position_name": "Python Developer",
-     "comment": "some comment",
-     "user_id": 103
-     }
 ]
 events_data = [
-    {"id": 1,
-     "vacancy_id": 1,
-     "description": "It's something",
-     "event_date": "01.01.2024",
-     "title": "Test Title",
-     "due_to_date": "01.01.2030",
-     "status": 1
+    {"id": "int",
+     "vacancy_id": "int",
+     "description": "text",
+     "event_date": "text",
+     "title": "text",
+     "due_to_date": "text",
+     "status": "int"
      },
-    {"id": 2,
-     "vacancy_id": 2,
-     "description": "It's something",
-     "event_date": "15.01.2024",
-     "title": "Test Title",
-     "due_to_date": "01.01.2030",
-     "status": 1
-     },
-    {"id": 3,
-     "vacancy_id": 3,
-     "description": "It's something",
-     "event_date": "01.02.2025",
-     "title": "Test Title",
-     "due_to_date": "01.01.2030",
-     "status": 1
-     }
 ]
 
+
+tables = {
+    "vacancy_table": {
+        "position_name": "",
+        "company": "",
+        "description": "",
+        "contacts_id": "",
+        "comment": "",
+    }
+}
 
 @app.route("/vacancy/", methods=['get', 'post'])
 def vacancy():
@@ -70,6 +44,8 @@ def vacancy():
        description = request.form.get['description']
        contacts_id = request.form.get['contacts_id']
        comment = request.form.get['comment']
+
+
     return render_template('add-vacancy.html')
 
 
