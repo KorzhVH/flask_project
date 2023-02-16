@@ -2,19 +2,6 @@ from flask import Flask, request, render_template
 import db_processing
 
 app = Flask(__name__)
-
-vacancy_data = [
-    {"id": "int",
-     "creation_date": "text",
-     "status": "int",
-     "company": "text",
-     "contacts_id": [],
-     "description": "text",
-     "position_name": "text",
-     "comment": "text",
-     "user_id": "int"
-     },
-]
 events_data = [
     {"id": "int",
      "vacancy_id": "int",
@@ -47,26 +34,25 @@ def vacancy():
         contacts_id = request.form.get('contacts_id')
         comment = request.form.get('comment')
         table_data = {
-                "id": 1,
-                "creation_date": "01-01-2022",
-                "position_name": position_name,
-                "company": company,
-                "description": description,
-                "contacts_id": contacts_id,
-                "comment": comment,
-                "user_id": 1
+            "vacancy_id": 1,
+            "creation_date": "01-01-2022",
+            "position_name": position_name,
+            "company": company,
+            "description": description,
+            "contacts_id": contacts_id,
+            "comment": comment,
+            "user_id": 1
         }
         db_processing.insert_info("vacancy", table_data)
 
     result = db_processing.select_info('Select * from vacancy')
-    return render_template('add-vacancy.html', all_vacancies = result)
+    return render_template('add-vacancy.html', all_vacancies=result)
 
 
-@app.route("/vacancy/vacancy_id/", methods=['GET'])
+@app.route("/vacancy/vacancy_id/", methods=['GET', 'PUT'])
 def vacancy_id(vacancy_id):
-    for vacancy_searcher in vacancy_data:
-        if vacancy_searcher["vacancy_id"] == vacancy_id:
-            return vacancy_searcher
+
+    return
 
 
 @app.route("/vacancy/vacancy_id/events/", methods=['GET', 'POST'])
