@@ -86,7 +86,7 @@ def vacancy_events(vacancy_id):
 
 @app.route("/vacancy/<vacancy_id>/events/<event_id>/", methods=['GET', 'PUT'])
 def show_event_by_id(vacancy_id, event_id):
-    result = db_processing.select_info(f'Select * from events where vacancy_id = {vacancy_id}, event_id = {event_id}')
+    result = db_processing.select_info(f'Select * from events where vacancy_id = {vacancy_id} and event_id = {event_id}')
     return render_template('add_event.html', all_events=result)
 
 
