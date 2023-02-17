@@ -79,20 +79,15 @@ def vacancy_events(vacancy_id):
         column = ", ".join(event_data.keys())
         placeholder = ':' + ', :'.join(event_data.keys())
         query = 'INSERT INTO %s (%s) VALUES (%s)' % ('events', column, placeholder)
-        db_processing.insert_info('events', event_data)
+        db_processing.insert_info(query, event_data)
     result = db_processing.select_info(f'Select * from events where vacancy_id = {vacancy_id}')
     return render_template('add_event.html', all_events=result)
 
 
-@app.route("/vacancy/vacancy_id/events/event_id/", methods=['GET', 'PUT'])
+@app.route("/vacancy/<vacancy_id>/events/<event_id>/", methods=['GET', 'PUT'])
 def show_event_by_id(vacancy_id, event_id):
-    # for event in events_data:
-    # if event["vacancy_id"] == vacancy_id:
-    #     list_of_events_for_vacancy.append(event)
-    # for event_searcher in list_of_events_for_vacancy:
-    #     if event_searcher["id"] == event_id:
-    #         return list_of_events_for_vacancy.append(event_searcher)
-    return
+    result = db_processing.select_info(f'Select * from events where vacancy_id = {vacancy_id}, event_id = {event_id}')
+    return render_template('add_event.html', all_events=result)
 
 
 @app.route("/vacancy/vacancy_id/history/", methods=['GET'])
