@@ -68,8 +68,8 @@ def vacancy_events(vacancy_id):
         title = request.form.get('title')
         due_to_date = request.form.get('due_to_date')
         event_data = {
-            'event_id': 1,
-            'vacancy_id': 1,
+            'event_id': 3,
+            'vacancy_id': 2,
             'description': description,
             'event_date': event_date,
             'title': title,
