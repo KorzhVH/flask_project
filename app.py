@@ -28,7 +28,7 @@ def vacancy():
         }
         column = ", ".join(table_data.keys())
         placeholder = ':' + ', :'.join(table_data.keys())
-        query = 'INSERT INTO vacancy (%s) VALUES (%s)' % (column, placeholder)
+        query = 'INSERT INTO %s (%s) VALUES (%s)' % ('vacancy', column, placeholder)
         db_processing.insert_info(query, table_data)
 
     result = db_processing.select_info('Select * from vacancy')
@@ -57,7 +57,7 @@ def vacancy_id(vacancy_id):
         db_processing.insert_info(query, table_data)
     result = db_processing.select_info('Select * from vacancy where vacancy_id = %s' % vacancy_id)
     return render_template('add-vacancy.html', all_vacancies=result)  # I think here should be different html template
-    # for  put form. Please tell me if I'm wrong.
+    # for  put form. Please tell me if I'm wrong
 
 
 @app.route("/vacancy/<vacancy_id>/events/", methods=['GET', 'POST'])
@@ -76,6 +76,9 @@ def vacancy_events(vacancy_id):
             'due_to_date': due_to_date,
             'status': 1
         }
+        column = ", ".join(event_data.keys())
+        placeholder = ':' + ', :'.join(event_data.keys())
+        query = 'INSERT INTO %s (%s) VALUES (%s)' % ('vacancy', column, placeholder)
         db_processing.insert_info('events', event_data)
     result = db_processing.select_info('Select * from events')
     return render_template('add_event.html', all_events=result)
