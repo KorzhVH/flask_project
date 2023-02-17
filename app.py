@@ -78,9 +78,9 @@ def vacancy_events(vacancy_id):
         }
         column = ", ".join(event_data.keys())
         placeholder = ':' + ', :'.join(event_data.keys())
-        query = 'INSERT INTO %s (%s) VALUES (%s)' % ('vacancy', column, placeholder)
+        query = 'INSERT INTO %s (%s) VALUES (%s)' % ('events', column, placeholder)
         db_processing.insert_info('events', event_data)
-    result = db_processing.select_info('Select * from events')
+    result = db_processing.select_info(f'Select * from events where vacancy_id = {vacancy_id}')
     return render_template('add_event.html', all_events=result)
 
 
