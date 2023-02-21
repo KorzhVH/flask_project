@@ -1,17 +1,19 @@
 import sqlite3
-def select_info(qry):
-    conn = sqlite3.connect('vacancy_db.db')
-    c = conn.cursor()
-    c.execute(qry)
-    result = c.fetchall()
-    conn.close()
-    return result
+class DB:
+    def __enter__(self):
+        self.conn = sqlite3.connect('vacancy_db.db')
+        self.c = self.conn.cursor()
+        return self
 
+    def query(self, qry):
+        self.c.execute(qry)
+        result = self.c.fetchall()
+        return result
 
-# self notes - study 12 and 13 lines
-def insert_info(qry, data):
-    conn = sqlite3.connect('vacancy_db.db')
-    c = conn.cursor()
-    c.execute(qry, data)
-    conn.commit()
-    conn.close()
+    def insert(self, qry, data):
+        self.c.execute(qry, data)
+        self.conn.commit()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.c.close()
+        self.conn.close()
