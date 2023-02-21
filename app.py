@@ -17,7 +17,7 @@ def vacancy():
         contacts_id = request.form.get('contacts_id')
         comment = request.form.get('comment')
         table_data = {
-            "vacancy_id": 1,
+            "vacancy_id": 4,
             "creation_date": "01-01-2022",
             "position_name": position_name,
             "company": company,
@@ -29,10 +29,12 @@ def vacancy():
         column = ", ".join(table_data.keys())
         placeholder = ':' + ', :'.join(table_data.keys())
         query = 'INSERT INTO %s (%s) VALUES (%s)' % ('vacancy', column, placeholder)
-        db_processing.insert_info(query, table_data)
-
-    result = db_processing.select_info('Select * from vacancy')
-    return render_template('add-vacancy.html', all_vacancies=result)
+        with db_processing.DB() as db:
+            db.insert(query, table_data)
+    else:
+        with db_processing.DB() as db:
+            result = db.query('select * from vacancy')
+            return render_template('add-vacancy.html', all_vacancies=result)
 
 
 @app.route("/vacancy/<vacancy_id>/", methods=['GET', 'PUT'])
