@@ -17,7 +17,7 @@ def vacancy():
         contacts_id = request.form.get('contacts_id')
         comment = request.form.get('comment')
         table_data = {
-            "vacancy_id": 6,
+            "vacancy_id": 5,
             "creation_date": "01-01-2022",
             "position_name": position_name,
             "company": company,
@@ -33,9 +33,8 @@ def vacancy():
             db.insert(query, table_data)
     else:
         with db_processing.DB() as db:
-            result = db.query('select * from vacancy')
-
-    return render_template('add-vacancy.html', all_vacancies=result)
+            get_result = db.query('select * from vacancy')
+        return render_template('add-vacancy.html', all_vacancies=get_result)
 
 
 @app.route("/vacancy/<vacancy_id>/", methods=['GET', 'PUT'])
@@ -56,11 +55,10 @@ def vacancy_id(vacancy_id):
             "comment": comment,
             "user_id": 1
         }
-        query = f'UPDATE vacancy SET position_name = {position_name}, company = {company}, description = {description}, contacts_id={contacts_id}, comment = {comment}'
-        db_processing.insert_info(query, table_data)
-    result = db_processing.select_info('Select * from vacancy where vacancy_id = %s' % vacancy_id)
-    return render_template('add-vacancy.html', all_vacancies=result)  # I think here should be different html template
-    # for  put form. Please tell me if I'm wrong
+    else:
+        with db_processing.DB() as db:
+            get_result = db.query('Select * from vacancy where vacancy_id = %s' % vacancy_id)
+        return render_template('add-vacancy.html', all_vacancies=get_result)
 
 
 @app.route("/vacancy/<vacancy_id>/events/", methods=['GET', 'POST'])
@@ -82,15 +80,22 @@ def vacancy_events(vacancy_id):
         column = ", ".join(event_data.keys())
         placeholder = ':' + ', :'.join(event_data.keys())
         query = 'INSERT INTO %s (%s) VALUES (%s)' % ('events', column, placeholder)
-        db_processing.insert_info(query, event_data)
-    result = db_processing.select_info(f'Select * from events where vacancy_id = {vacancy_id}')
-    return render_template('add_event.html', all_events=result)
+        with db_processing.DB() as db:
+            db.insert(query, event_data)
+    else:
+        with db_processing.DB() as db:
+            get_result = db.query(f'Select * from events where vacancy_id = {vacancy_id}')
+        return render_template('add_event.html', all_events=get_result)
 
 
 @app.route("/vacancy/<vacancy_id>/events/<event_id>/", methods=['GET', 'PUT'])
 def show_event_by_id(vacancy_id, event_id):
-    result = db_processing.select_info(f'Select * from events where vacancy_id = {vacancy_id} and event_id = {event_id}')
-    return render_template('add_event.html', all_events=result)
+    if request.method == 'PUT':
+        pass
+    else:
+        with db_processing.DB() as db:
+            get_result = db.query(f'Select * from events where vacancy_id = {vacancy_id} and event_id = {event_id}')
+        return render_template('add_event.html', all_events=get_result)
 
 
 @app.route("/vacancy/vacancy_id/history/", methods=['GET'])
