@@ -71,7 +71,7 @@ def vacancy_events(vacancy_id):
         due_to_date = request.form.get('due_to_date')
         event_data = {
             'event_id': 3,
-            'vacancy_id': 2,
+            'vacancy_id': 8,
             'description': description,
             'event_date': event_date,
             'title': title,
@@ -83,6 +83,8 @@ def vacancy_events(vacancy_id):
         query = 'INSERT INTO %s (%s) VALUES (%s)' % ('events', column, placeholder)
         with db_processing.DB() as db:
             db.insert(query, event_data)
+            get_result = db.query('select * from vacancy')
+            return render_template('add-vacancy.html', all_events=get_result)
     else:
         with db_processing.DB() as db:
             get_result = db.query(f'Select * from events where vacancy_id = {vacancy_id}')
