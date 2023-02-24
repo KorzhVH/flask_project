@@ -31,15 +31,18 @@ def vacancy():
         query = 'INSERT INTO %s (%s) VALUES (%s)' % ('vacancy', column, placeholder)
         with db_processing.DB() as db:
             db.insert(query, table_data)
+            get_result = db.query('select * from vacancy')
+            return render_template('add-vacancy.html', all_vacancies=get_result)
+
     else:
         with db_processing.DB() as db:
             get_result = db.query('select * from vacancy')
         return render_template('add-vacancy.html', all_vacancies=get_result)
 
 
-@app.route("/vacancy/<vacancy_id>/", methods=['GET', 'PUT'])
+@app.route("/vacancy/<vacancy_id>/", methods=['GET', 'POST'])
 def vacancy_id(vacancy_id):
-    if request.method == 'PUT':
+    if request.method == 'POST':
         position_name = request.form.get('position_name')
         company = request.form.get('company')
         description = request.form.get('description')
