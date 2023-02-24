@@ -17,7 +17,6 @@ def vacancy():
         contacts_id = request.form.get('contacts_id')
         comment = request.form.get('comment')
         table_data = {
-            "vacancy_id": 5,
             "creation_date": "01-01-2022",
             "position_name": position_name,
             "company": company,
@@ -49,7 +48,6 @@ def vacancy_id(vacancy_id):
         contacts_id = request.form.get('contacts_id')
         comment = request.form.get('comment')
         table_data = {
-            "vacancy_id": 1,
             "creation_date": "01-01-2022",
             "position_name": position_name,
             "company": company,
