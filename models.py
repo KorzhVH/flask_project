@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey
 from datetime import datetime
 from alch_db import Base
 
@@ -22,11 +22,11 @@ class User(Base):
 class Vacancy(Base):
     __tablename__ = 'vacancy'
     vacancy_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
-    user_id = Column(Integer, ForeignKey('user_id'), nullable=False)
+    user_id = Column(Integer, ForeignKey('user.user_id'), nullable=False)
     status = Column(Integer, nullable=False)
     position_name = Column(String(50), nullable=False)
     company = Column(String(50), nullable=False)
-    creation_date = Column(DateTime, default=datetime.now().isoformat())
+    creation_date = Column(String(40), default=datetime.now().isoformat())
     description = Column(String(200), nullable=False)
     contacts_id = Column(String(120))
     comment = Column(String(200))
