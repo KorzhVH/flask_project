@@ -1,5 +1,7 @@
 from flask import Flask, request, render_template
 import db_processing
+import alch_db
+from models import Vacancy
 
 app = Flask(__name__)
 
@@ -28,14 +30,14 @@ def vacancy():
         column = ", ".join(table_data.keys())
         placeholder = ':' + ', :'.join(table_data.keys())
         query = 'INSERT INTO %s (%s) VALUES (%s)' % ('vacancy', column, placeholder)
-        with db_processing.DB() as db:
-            db.insert(query, table_data)
-            get_result = db.query('select * from vacancy')
-            return render_template('add-vacancy.html', all_vacancies=get_result)
+        current_vacancy = Vacancy(1, 1, position_name, company, description, contacts_id, comment)
+        alch_db.db_session.add(current_vacancy)
+        alch_db.db_session.commit()
+        get_result = alch_db.db_session.query(Vacancy).where(user_id = 1)
+        return render_template('add-vacancy.html', all_vacancies=get_result)
 
     else:
-        with db_processing.DB() as db:
-            get_result = db.query('select * from vacancy')
+        get_result = alch_db.db_session.query(Vacancy).all()
         return render_template('add-vacancy.html', all_vacancies=get_result)
 
 
@@ -47,18 +49,8 @@ def vacancy_id(vacancy_id):
         description = request.form.get('description')
         contacts_id = request.form.get('contacts_id')
         comment = request.form.get('comment')
-        table_data = {
-            "creation_date": "01-01-2022",
-            "position_name": position_name,
-            "company": company,
-            "description": description,
-            "contacts_id": contacts_id,
-            "comment": comment,
-            "user_id": 1
-        }
     else:
-        with db_processing.DB() as db:
-            get_result = db.query('Select * from vacancy where vacancy_id = %s' % vacancy_id)
+        get_result = alch_db.db_session.query(Vacancy).where(user_id=1)
         return render_template('add-vacancy.html', all_vacancies=get_result)
 
 
@@ -91,9 +83,9 @@ def vacancy_events(vacancy_id):
         return render_template('add_event.html', all_events=get_result)
 
 
-@app.route("/vacancy/<vacancy_id>/events/<event_id>/", methods=['GET', 'PUT'])
+@app.route("/vacancy/<vacancy_id>/events/<event_id>/", methods=['GET', 'POST'])
 def show_event_by_id(vacancy_id, event_id):
-    if request.method == 'PUT':
+    if request.method == 'POST':
         pass
     else:
         with db_processing.DB() as db:
