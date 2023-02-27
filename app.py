@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template
 import db_processing
 import alch_db
-from models import Vacancy
+from models import Vacancy, Events
 
 app = Flask(__name__)
 
@@ -47,29 +47,18 @@ def vacancy_id(vacancy_id):
 def vacancy_events(vacancy_id):
     alch_db.init_db()
     if request.method == "POST":
+        event_id = request.form.get('event_id')
+        title = request.form.get('title')
         description = request.form.get('description')
         event_date = request.form.get('event_date')
-        title = request.form.get('title')
         due_to_date = request.form.get('due_to_date')
-        event_data = {
-            'event_id': 3,
-            'vacancy_id': 8,
-            'description': description,
-            'event_date': event_date,
-            'title': title,
-            'due_to_date': due_to_date,
-            'status': 1
-        }
-        column = ", ".join(event_data.keys())
-        placeholder = ':' + ', :'.join(event_data.keys())
-        query = 'INSERT INTO %s (%s) VALUES (%s)' % ('events', column, placeholder)
-        with db_processing.DB() as db:
-            db.insert(query, event_data)
-            get_result = db.query('select * from vacancy')
-            return render_template('add-vacancy.html', all_events=get_result)
+        curr_event = Events(event_id, vacancy_id, title, description, event_date, due_to_date, 100)
+        alch_db.db_session.add(curr_event)
+        alch_db.db_session.commit()
+        get_result = alch_db.db_session.query(Vacancy).all()
+        return render_template('add-vacancy.html', all_vacancies=get_result)
     else:
-        with db_processing.DB() as db:
-            get_result = db.query(f'Select * from events where vacancy_id = {vacancy_id}')
+        get_result = alch_db.db_session.query(Events).all()
         return render_template('add_event.html', all_events=get_result)
 
 
@@ -79,8 +68,7 @@ def show_event_by_id(vacancy_id, event_id):
     if request.method == 'POST':
         pass
     else:
-        with db_processing.DB() as db:
-            get_result = db.query(f'Select * from events where vacancy_id = {vacancy_id} and event_id = {event_id}')
+        get_result = alch_db.db_session.query(Events).where(Events.event_id == event_id, Events.vacancy_id == vacancy_id)
         return render_template('add_event.html', all_events=get_result)
 
 

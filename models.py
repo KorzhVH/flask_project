@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from datetime import datetime
 from alch_db import Base
 
@@ -42,3 +42,25 @@ class Vacancy(Base):
 
     def __repr__(self):
         return f'<Vacancy {self.position_name}>'
+
+class Events(Base):
+    __tablename__ = 'events'
+    event_id = Column(Integer, primary_key=True, nullable=False)
+    vacancy_id = Column(Integer, ForeignKey('vacancy.vacancy_id'))
+    title = Column(String(80), nullable=False)
+    description = Column(String(200), nullable=False)
+    event_date = Column(DateTime)
+    due_to_date = Column(DateTime)
+    status = Column(Integer, nullable=False)
+
+    def __init__(self, event_id, vacancy_id, title, description, event_date, due_to_date, status):
+        self.event_id = event_id
+        self.vacancy_id = vacancy_id
+        self.title = title
+        self.description = description
+        self.event_date = event_date
+        self.due_to_date = due_to_date
+        self.status = status
+
+    def __repr__(self):
+        return f'<Vacancy {self.title}>'
