@@ -18,24 +18,11 @@ def vacancy():
         description = request.form.get('description')
         contacts_id = request.form.get('contacts_id')
         comment = request.form.get('comment')
-        table_data = {
-            "creation_date": "01-01-2022",
-            "position_name": position_name,
-            "company": company,
-            "description": description,
-            "contacts_id": contacts_id,
-            "comment": comment,
-            "user_id": 1
-        }
-        column = ", ".join(table_data.keys())
-        placeholder = ':' + ', :'.join(table_data.keys())
-        query = 'INSERT INTO %s (%s) VALUES (%s)' % ('vacancy', column, placeholder)
         current_vacancy = Vacancy(1, 1, position_name, company, description, contacts_id, comment)
         alch_db.db_session.add(current_vacancy)
         alch_db.db_session.commit()
-        get_result = alch_db.db_session.query(Vacancy).where(user_id = 1)
+        get_result = alch_db.db_session.query(Vacancy).all()
         return render_template('add-vacancy.html', all_vacancies=get_result)
-
     else:
         get_result = alch_db.db_session.query(Vacancy).all()
         return render_template('add-vacancy.html', all_vacancies=get_result)

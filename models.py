@@ -2,7 +2,22 @@ from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from datetime import datetime
 from alch_db import Base
 
-# from database import Base
+class User(Base):
+    __tablename__ = 'user'
+    user_id = Column(Integer, primary_key=True, nullable=False)
+    name = Column(String(40), nullable=False)
+    login = Column(String(40), nullable=False)
+    password = Column(String(20), nullable=False)
+    email = Column(String(100), nullable=False)
+
+    def __init__(self, name, login, password, email):
+        self.name = name
+        self.login = login
+        self.password = password
+        self.email = email
+
+    def __repr__(self):
+        return f'<User {self.name}>'
 
 class Vacancy(Base):
 
