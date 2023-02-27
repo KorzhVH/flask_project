@@ -19,7 +19,7 @@ def vacancy():
         description = request.form.get('description')
         contacts_id = request.form.get('contacts_id')
         comment = request.form.get('comment')
-        current_vacancy = Vacancy(1, 1, position_name, company, description, contacts_id, comment)
+        current_vacancy = Vacancy(200, position_name, company, description, contacts_id, comment, 1)
         alch_db.db_session.add(current_vacancy)
         alch_db.db_session.commit()
         get_result = alch_db.db_session.query(Vacancy).all()
