@@ -67,7 +67,7 @@ def show_event_by_id(vacancy_id, event_id):
     if request.method == 'POST':
         pass
     else:
-        get_result = alch_db.db_session.query(Events).where(Events.event_id == event_id, Events.vacancy_id == vacancy_id)
+        get_result = alch_db.db_session.query(Events).where(Events.event_id == event_id, Events.vacancy_id == vacancy_id).all()
         return render_template('add_event.html', all_events=get_result)
 
 
