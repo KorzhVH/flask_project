@@ -38,7 +38,7 @@ def vacancy_id(vacancy_id):
         contacts_id = request.form.get('contacts_id')
         comment = request.form.get('comment')
     else:
-        get_result = alch_db.db_session.query(Vacancy).where(user_id=1)
+        get_result = alch_db.db_session.query(Vacancy).where(vacancy_id=vacancy_id)
         return render_template('add-vacancy.html', all_vacancies=get_result)
 
 
