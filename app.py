@@ -31,6 +31,7 @@ def vacancy():
 
 @app.route("/vacancy/<vacancy_id>/", methods=['GET', 'POST'])
 def vacancy_id(vacancy_id):
+    alch_db.init_db()
     if request.method == 'POST':
         position_name = request.form.get('position_name')
         company = request.form.get('company')
@@ -38,12 +39,13 @@ def vacancy_id(vacancy_id):
         contacts_id = request.form.get('contacts_id')
         comment = request.form.get('comment')
     else:
-        get_result = alch_db.db_session.query(Vacancy).where(vacancy_id=vacancy_id)
+        get_result = alch_db.db_session.query(Vacancy).where(Vacancy.vacancy_id == vacancy_id).all()
         return render_template('add-vacancy.html', all_vacancies=get_result)
 
 
 @app.route("/vacancy/<vacancy_id>/events/", methods=['GET', 'POST'])
 def vacancy_events(vacancy_id):
+    alch_db.init_db()
     if request.method == "POST":
         description = request.form.get('description')
         event_date = request.form.get('event_date')
@@ -73,6 +75,7 @@ def vacancy_events(vacancy_id):
 
 @app.route("/vacancy/<vacancy_id>/events/<event_id>/", methods=['GET', 'POST'])
 def show_event_by_id(vacancy_id, event_id):
+    alch_db.init_db()
     if request.method == 'POST':
         pass
     else:
