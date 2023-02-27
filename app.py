@@ -12,6 +12,7 @@ events_data = {
 
 @app.route("/vacancy/", methods=['GET', 'POST'])
 def vacancy():
+    alch_db.init_db()
     if request.method == "POST":
         position_name = request.form.get('position_name')
         company = request.form.get('company')

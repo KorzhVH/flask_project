@@ -4,7 +4,7 @@ from alch_db import Base
 
 class User(Base):
     __tablename__ = 'user'
-    user_id = Column(Integer, primary_key=True, nullable=False)
+    user_id = Column(Integer, primary_key=True, nullable=False, unique=True)
     name = Column(String(40), nullable=False)
     login = Column(String(40), nullable=False)
     password = Column(String(20), nullable=False)
@@ -20,7 +20,6 @@ class User(Base):
         return f'<User {self.name}>'
 
 class Vacancy(Base):
-
     __tablename__ = 'vacancy'
     vacancy_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     user_id = Column(Integer, ForeignKey('user_id'), nullable=False)
