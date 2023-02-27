@@ -1,5 +1,4 @@
 from flask import Flask, request, render_template
-import db_processing
 import alch_db
 from models import Vacancy, Events
 

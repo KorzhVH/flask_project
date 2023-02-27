@@ -49,8 +49,8 @@ class Events(Base):
     vacancy_id = Column(Integer, ForeignKey('vacancy.vacancy_id'))
     title = Column(String(80), nullable=False)
     description = Column(String(200), nullable=False)
-    event_date = Column(DateTime)
-    due_to_date = Column(DateTime)
+    event_date = Column(String(40))
+    due_to_date = Column(String(40))
     status = Column(Integer, nullable=False)
 
     def __init__(self, event_id, vacancy_id, title, description, event_date, due_to_date, status):
@@ -63,4 +63,4 @@ class Events(Base):
         self.status = status
 
     def __repr__(self):
-        return f'<Vacancy {self.title}>'
+        return f'<Event {self.title}>'
